@@ -1,8 +1,6 @@
 import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HashMap;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
