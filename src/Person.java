@@ -1,25 +1,25 @@
 import java.util.Objects;
 
-public class User {
+public class Person {
     private int age;
     private String name;
     private int number;
 
-    public User(int age, String name, int number){
+    public Person(int age, String name, int number){
         this.age = age;
         this.name = name;
         this.number = number;
-        System.out.printf("Constructor for new user has been called!\n");
+        System.out.printf("Constructor for new Person has been called!\n");
     }
 
-    public User(){
+    public Person(){
         this(20, "Vasya", 88743);
-        System.out.printf("Default user has been created!\n");
+        System.out.printf("Default Person has been created!\n");
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Person{" +
                 "age=" + age +
                 ", name='" + name + '\'' +
                 ", number=" + number +
@@ -29,8 +29,8 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return getAge() == user.getAge() && getNumber() == user.getNumber() && Objects.equals(getName(), user.getName());
+        Person Person = (Person) o;
+        return getAge() == Person.getAge() && getNumber() == Person.getNumber() && Objects.equals(getName(), Person.getName());
     }
 
     @Override

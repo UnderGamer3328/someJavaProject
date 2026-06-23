@@ -8,23 +8,14 @@ public class Main {
     static Controller admin = new Controller(18, "Ruslan", 552844, 1, false, 700);
     public static void main(String[] args){
 
-        //Sat creation and controlling block
         ArrayList<Satellite> satellitesList = new ArrayList<>();
 
         satellitesList.add(new Satellite("SpaceX", 547.47, 48500, 'L', "9/10", true));
 
-        System.out.printf("\n---Starting Transmissions---\n\n");
-        for(Satellite sat : satellitesList){
-            sat.transmitSignal();
-            System.out.println();
-            }
-
-        //Controller and User blocks
-        ArrayList<User> userList = new ArrayList<>();
+        ArrayList<Person> userList = new ArrayList<>();
         userList.add(admin);
-        userList.add(new User(20, "Roma", 65830));
+        userList.add(new Person(20, "Roma", 65830));
 
-        //Receiver block
         ArrayList<Receiver> receiverList = new ArrayList<>();
         Receiver r1 = new Receiver(1, 24.9, "AES-256", true);
         receiverList.add(r1);
@@ -53,13 +44,17 @@ public class Main {
 
     }
 
+    static void listInventory(){
+
+    }
+
     static void buySat(){
-        System.out.printf("\n--- Satellite Purchase Process ---\n");
+        System.out.print("\n--- Satellite Purchase Process ---\n");
         System.out.printf("Controller %s has initial wealth: %.2f\n", admin.getName(), admin.getWealth());
         System.out.printf("Access status before purchase: %b\n", admin.isHasAccess());
 
         admin.buySat(450);
-        System.out.printf("\n[System]: Purchase completed successfully!\n\n");
+        System.out.print("\n[System]: Purchase completed successfully!\n\n");
 
         System.out.printf("Controller %s has wealth after purchase: %.2f\n", admin.getName(), admin.getWealth());
         System.out.printf("Access status after purchase: %b\n", admin.isHasAccess());
@@ -81,7 +76,7 @@ public class Main {
             System.out.println("8. Create new Default Receiver");
             System.out.println("9. Next page ->");
             System.out.println("0. Exit\n");
-            System.out.printf("Enter your choice: ");
+            System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
             switch (choice){
                 case 1:
@@ -97,7 +92,7 @@ public class Main {
                     createNewReceiver();
                     break;
                 case 5:
-                    User user1 = new User();
+                    Person user1 = new Person();
                     break;
                 case 6:
                     Controller contrl = new Controller();
@@ -125,18 +120,18 @@ public class Main {
             System.out.println("---Main menu---");
             System.out.println("Page 2");
             System.out.println("1. Buy Satellite");
-            System.out.println("9. <- Go back");
-            System.out.println("0. Exit\n");
-            System.out.printf("Enter your choice: ");
+            System.out.println("8. List inventory items");
+            System.out.println("0. <- Go back");
+            System.out.print("Enter your choice: ");
             choice1 = scanner.nextInt();
             switch (choice1){
                 case 1:
-
+                    buySat();
                     break;
-                case 9:
-                    mainMenu();
+                case 8:
+                    listInventory();
                 case 0:
-                    System.exit(0);
+                    mainMenu();
                 default:
                     System.out.println("Enter valid operation: ");
             }

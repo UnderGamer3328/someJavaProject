@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Controller extends User{
+public class Controller extends Person{
     private int userID;
     private boolean hasAccess;
     private double wealth;
