@@ -1,14 +1,17 @@
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 public class Student extends Person{
     private int kurs;
-    private ArrayList<String> zachetka = new ArrayList<>();
+    private ArrayList<String> zachetka;
     private String location;
     private double health;
+    private final long id;
 
     {
-        System.out.print("New Student has been created!\n");
+        id = new Random(1).nextLong(100);
+        System.out.printf("New Student with student id:%d has been created!\n", id);
     }
 
     public Student(int age, String name, int number, int kurs, ArrayList<String> zachetka, String location, double health){
@@ -73,5 +76,9 @@ public class Student extends Person{
 
     public void setHealth(double health) {
         this.health = health;
+    }
+
+    public long getId() {
+        return id;
     }
 }
