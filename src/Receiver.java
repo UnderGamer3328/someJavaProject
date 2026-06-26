@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Receiver {
+public class Receiver implements Serializable {
     private int channel;
     private double frequency;
     private String encType;

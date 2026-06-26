@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Student extends Person{
+public class Student extends Person implements Cloneable, Comparable<Student>, Serializable {
     private int kurs;
     private ArrayList<String> zachetka;
     private String location;
@@ -10,7 +11,7 @@ public class Student extends Person{
     private final long id;
 
     {
-        id = new Random(1).nextLong(100);
+        id = ThreadLocalRandom.current().nextLong(100_000, 1_000_000);
         System.out.printf("New Student with student id:%d has been created!\n", id);
     }
 
@@ -22,7 +23,7 @@ public class Student extends Person{
         this.health = health;
         System.out.print("Constructor for new Student has been called!\n");
     }
-    
+
     @Override
     public String toString() {
         return "Student{" +
@@ -30,6 +31,7 @@ public class Student extends Person{
                 ", zachetka=" + zachetka +
                 ", location='" + location + '\'' +
                 ", health=" + health +
+                ", id=" + id +
                 '}';
     }
 
@@ -38,13 +40,15 @@ public class Student extends Person{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Student student = (Student) o;
-        return getKurs() == student.getKurs() && Double.compare(getHealth(), student.getHealth()) == 0 && Objects.equals(getZachetka(), student.getZachetka()) && Objects.equals(getLocation(), student.getLocation());
+        return getKurs() == student.getKurs() && Double.compare(getHealth(), student.getHealth()) == 0 && getId() == student.getId() && Objects.equals(getZachetka(), student.getZachetka()) && Objects.equals(getLocation(), student.getLocation());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getKurs(), getZachetka(), getLocation(), getHealth());
+        return Objects.hash(super.hashCode(), getKurs(), getZachetka(), getLocation(), getHealth(), getId());
     }
+
+
 
     public int getKurs() {
         return kurs;
@@ -80,5 +84,21 @@ public class Student extends Person{
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        return Double.compare(this.health, o.health);
+    }
+
+    @Override
+    public Student clone() {
+        try {
+            Student cloned = (Student) super.clone();
+            cloned.zachetka = new ArrayList<>(this.zachetka);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

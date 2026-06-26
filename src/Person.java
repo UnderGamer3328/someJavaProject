@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Person {
+public class Person implements Serializable {
     private int age;
     private String name;
     private int number;
@@ -9,7 +10,7 @@ public class Person {
         this.age = age;
         this.name = name;
         this.number = number;
-        System.out.printf("Constructor for new Person has been called!\n");
+        //System.out.printf("Constructor for new Person has been called!\n");
     }
 
     public Person(){

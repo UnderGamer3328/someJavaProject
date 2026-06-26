@@ -1,10 +1,11 @@
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Scanner;
+import java.util.Random;
 import java.util.ArrayList;
-import java.io.IOException;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
+    static Random rnd = new Random();
     static Controller admin = new Controller(18, "Ruslan", 552844, 1, false, 700);
     static ArrayList<Satellite> satellitesList = new ArrayList<>();
     static ArrayList<Person> userList = new ArrayList<>();
@@ -33,7 +34,7 @@ public class Main {
 
     public static void main(String[] args){
         //Satellites
-        satellitesList.add(new Satellite("SpaceX", 547.47, 48500, 'L', "9/10", true));
+        satellitesList.add(new Satellite("SpaceX", 547.47, 48500, 'L', "9/10", true, new ArrayList<>()));
 
         //Persons, Students, Controllers
         userList.add(admin);
@@ -51,10 +52,6 @@ public class Main {
         Person ruslan = new Student(18, "Ruslan", 52487746, 1, ruslansZachetka, "Cafeteria", 95.0);
 
         userList.addFirst(ruslan);
-
-        for(String s : ruslansZachetka){
-            System.out.println(s);
-        }
 
         //Receivers
         Receiver r1 = new Receiver(1, 24.9, "AES-256", true);
@@ -100,6 +97,7 @@ public class Main {
         ArrayList<String> newZachetka = new ArrayList<>();
         System.out.print("How many subjects to add to Zachetka?: ");
         int subjectsCount = scanner.nextInt();
+        scanner.nextLine();
         for(int i = 0; i < subjectsCount; i++){
             System.out.printf("Enter subject %d (e.g., OOP: 95A): ", i + 1);
             String subject = scanner.nextLine();
@@ -140,7 +138,7 @@ public class Main {
         boolean isOn = scanner.nextBoolean();
         scanner.nextLine();
 
-        satellitesList.add(new Satellite(satName, frequency, sr, pol, fec, isOn));
+        satellitesList.add(new Satellite(satName, frequency, sr, pol, fec, isOn, new ArrayList<>()));
         System.out.println("[System]: Satellite created successfully!");
     }
 
@@ -161,15 +159,39 @@ public class Main {
         scanner.nextLine();
 
         receiverList.add(new Receiver(channel, receiverFrequency, encType, power));
-        System.out.println("[System]: Satellite created successfully!");
+        System.out.println("[System]: Receiver created successfully!");
     }
 
     static void listInventory(){
-        System.out.println("\n--- Current Inventory ---");
-        System.out.println("Satellites count: " + satellitesList.size());
-        System.out.println("Receivers count: " + receiverList.size());
-        System.out.println("Users count: " + userList.size());
-        System.out.println("-------------------------\n");
+        System.out.println("[System]: Listing all objects");
+
+        System.out.println("Satellites:");
+        for(Satellite s : satellitesList){
+            System.out.println("  " + s);
+        }
+
+        System.out.println("-----------");
+
+        System.out.println("Users:");
+        for(Person p : userList){
+            System.out.println("  " + p);
+        }
+
+        System.out.println("-----------");
+
+        System.out.println("Receivers:");
+        for(Receiver r : receiverList){
+            System.out.println("  " + r);
+        }
+    }
+
+    static void listZachetka(){
+        System.out.println();
+        System.out.println("Залікова книжка");
+        for(String s : ruslansZachetka){
+            System.out.println(s);
+        }
+        System.out.println();
     }
 
     static void buySat(){
@@ -184,6 +206,45 @@ public class Main {
         System.out.printf("Access status after purchase: %b\n", admin.isHasAccess());
     }
 
+    static void saveAllData() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("backup.dat");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+
+            objectOut.writeObject(userList);
+            objectOut.writeObject(satellitesList);
+            objectOut.writeObject(receiverList);
+            objectOut.writeObject(ruslansZachetka);
+
+            objectOut.close();
+            fileOut.close();
+            System.out.println("[System]: All data collections successfully serialized to backup.dat");
+        } catch (IOException e) {
+            System.out.println("[System Error]: Serialization failed.");
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    static void loadAllData () {
+        try{
+        FileInputStream fileIn = new FileInputStream("backup.dat");
+        ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+        userList = (ArrayList<Person>) objectIn.readObject();
+        satellitesList = (ArrayList<Satellite>) objectIn.readObject();
+        receiverList = (ArrayList<Receiver>) objectIn.readObject();
+        ruslansZachetka = (ArrayList<String>) objectIn.readObject();
+
+        objectIn.close();
+        fileIn.close();
+        System.out.println("[System]: All data collections successfully loaded from backup.dat");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("[System Error]: Deserialization failed. Backup file might not exist yet.");
+            e.printStackTrace();
+        }
+    }
+
     static void mainMenu(){
         try{
             while (true){
@@ -194,9 +255,9 @@ public class Main {
                 System.out.println("3. Create new Satellite (w/parameters)");
                 System.out.println("4. Create new Receiver (w/parameters)");
                 System.out.println("5. Create new Default User");
-                System.out.println("6. Create new Default Satellite");
-                System.out.println("7. Create new Default Receiver");
-                System.out.println("8. NULL");
+                System.out.println("6. Create new Default Controller");
+                System.out.println("7. Create new Default Satellite");
+                System.out.println("8. Create new Default Receiver");
                 System.out.println("9. Next page ->");
                 System.out.println("0. Exit\n");
                 System.out.print("Enter your choice: ");
@@ -254,6 +315,10 @@ public class Main {
                 System.out.println("---Main menu---");
                 System.out.println("Page 2");
                 System.out.println("1. Buy Satellite");
+                System.out.println("2. Save zachetka to file");
+                System.out.println("3. Save all data");
+                System.out.println("4. Load all data");
+                System.out.println("5. List zachetka");
                 System.out.println("9. List inventory items");
                 System.out.println("0. <- Go back");
                 System.out.print("Enter your choice: ");
@@ -264,11 +329,22 @@ public class Main {
                     case 1:
                         buySat();
                         break;
+                    case 2:
+                        saveZachetkaToFile(ruslansZachetka, "objects.txt");
+                        break;
+                    case 3:
+                        saveAllData();
+                        break;
+                    case 4:
+                        loadAllData();
+                        break;
+                    case 5:
+                        listZachetka();
+                        break;
                     case 9:
                         listInventory();
                         break;
                     case 0:
-                        mainMenu();
                         return;
                     default:
                         System.out.println("Enter valid operation: ");

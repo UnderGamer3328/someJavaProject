@@ -1,20 +1,21 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Controller extends Person{
+public class Controller extends Person implements Serializable {
     private int userID;
     private boolean hasAccess;
     private double wealth;
 
-    {
-        System.out.printf("New controller for satellites has been created!\n");
-    }
+//    {
+//        System.out.printf("New controller for satellites has been created!\n");
+//    }
 
     public Controller(int age, String name, int number, int userID, boolean hasAccess, double wealth){
         super(age, name, number);
         this.userID = userID;
         this.hasAccess = hasAccess;
         this.wealth = wealth;
-        System.out.printf("Constructor for new controller has been called!\n");
+        //System.out.printf("Constructor for new controller has been called!\n");
     }
 
     public Controller(){
