@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
@@ -250,6 +251,45 @@ public class Main {
             while (true){
                 System.out.println("---Main menu---");
                 System.out.println("Page 1");
+                System.out.println("1. Object creation");
+                System.out.println("2. Change object settings");
+                System.out.println("3. Delete object");
+                System.out.println("9. Admin menu ->");
+                System.out.println("0. Exit\n");
+                System.out.print("Enter your choice: ");
+
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (choice){
+                    case 1:
+                        objectCreation();
+                        break;
+                    case 2:
+                        objectSettings();
+                        break;
+                    case 3:
+                        deleteObject();
+                        break;
+                    case 9:
+                        adminMenu();
+                        break;
+                    case 0:
+                        System.exit(0);
+                        return;
+                    default:
+                        System.out.println("Enter valid operation: ");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("[Critical Error]: Invalid input format! Resetting menu...");
+            scanner.nextLine();
+        }
+    }
+
+    static void objectCreation(){
+        try{
+            while (true){
                 System.out.println("1. Create new User (w/parameters)");
                 System.out.println("2. Create new Student (w/parameters)");
                 System.out.println("3. Create new Satellite (w/parameters)");
@@ -258,14 +298,13 @@ public class Main {
                 System.out.println("6. Create new Default Controller");
                 System.out.println("7. Create new Default Satellite");
                 System.out.println("8. Create new Default Receiver");
-                System.out.println("9. Next page ->");
-                System.out.println("0. Exit\n");
+                System.out.println("0. <- Go back");
                 System.out.print("Enter your choice: ");
 
-                int choice = scanner.nextInt();
+                int choice1 = scanner.nextInt();
                 scanner.nextLine();
 
-                switch (choice){
+                switch (choice1){
                     case 1:
                         createNewPerson();
                         break;
@@ -294,26 +333,28 @@ public class Main {
                         Receiver rec = new Receiver();
                         receiverList.add(rec);
                         break;
-                    case 9:
-                        nextPage();
-                        break;
                     case 0:
-                        System.exit(0);
                         return;
                     default:
                         System.out.println("Enter valid operation: ");
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }catch (Exception e){
+            throw new InputMismatchException();
         }
     }
 
-    static void nextPage(){
+    static void objectSettings(){
+
+    }
+
+    static void deleteObject(){
+
+    }
+
+    static void adminMenu(){
         try{
             while (true){
-                System.out.println("---Main menu---");
-                System.out.println("Page 2");
                 System.out.println("1. Buy Satellite");
                 System.out.println("2. Save zachetka to file");
                 System.out.println("3. Save all data");
@@ -346,12 +387,11 @@ public class Main {
                         break;
                     case 0:
                         return;
-                    default:
-                        System.out.println("Enter valid operation: ");
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("[Critical Error]: Invalid input format! Resetting menu...");
+            scanner.nextLine();
         }
 
     }

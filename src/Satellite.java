@@ -9,7 +9,7 @@ public class Satellite implements Cloneable, Comparable<Satellite>, Serializable
     private char polarisation;
     private String fec;
     private boolean isOn;
-    private ArrayList<String> telemetry = new ArrayList<>();
+    private ArrayList<String> telemetry;
 
     static {
         System.out.print("System is on! Starting services...\n");
